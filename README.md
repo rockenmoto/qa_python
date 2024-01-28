@@ -1,1 +1,35 @@
 # qa_python
+# Написанные тесты для проверки методов класса BooksCollector
+
+# Проверка метода add_new_book
+# test_add_new_book_add_two_books_added
+# test_add_new_book_add_name_book_with_genre_not_added
+# test_add_new_book_add_empty_name_book_not_added
+
+# Проверка метода set_book_genre
+# test_set_book_genre_set_genre_added
+# test_set_book_genre_set_genre_without_book_not_added
+
+# Проверка метода get_book_genre
+# test_get_book_genre_book_name_with_genre
+# test_get_book_genre_book_name_without_genre
+
+# Проверка метода get_books_with_specific_genre
+# test_get_books_with_specific_genre_specific_genre
+# test_get_books_with_specific_genre_unspecific_genre
+
+# Проверка метода get_books_for_children
+# test_get_books_for_children_children_books_with_children_genres
+# test_get_books_for_children_not_children_books_with_not_children_genres
+
+# Проверка метода add_book_in_favorites
+# test_add_book_in_favorites_specific_book_name_added
+# test_add_book_in_favorites_specific_book_name_not_added_twice
+# test_add_book_in_favorites_unspecific_name_not_added
+
+# Проверка метода delete_book_from_favorites
+# test_delete_book_from_favorites_specific_book_name_deleted
+# test_test_delete_book_from_favorites
+
+# Проверка метода get_list_of_favorites_books
+# test_get_list_of_favorites_books_book_name
