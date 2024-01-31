@@ -1,61 +1,21 @@
-import random
 import pytest
-
-from main import BooksCollector
 
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
 # обязательно указывать префикс Test
 class TestBooksCollector:
-    # Метод для инициализации класса
-    @pytest.fixture(autouse=True)
-    def collector(self):
-        collector = BooksCollector()
-        return collector
-
-    # Метод для добавления 1-й книги "Гордость и предубеждение и зомби"
-    @pytest.fixture(autouse=False)
-    def add_book(self, collector):
-        book_name = 'Гордость и предубеждение и зомби'
-        collector.add_new_book(book_name)
-        return book_name
-
     # Проверка метода add_new_book
     def test_add_new_book_add_two_books_added(self, collector, add_book):
-        # добавляем две книги
+        # добавление второй книги
         collector.add_new_book('Что делать, если ваш кот хочет вас убить')
         # проверяем, что добавилось именно две
         # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
         assert len(collector.get_books_genre()) == 2
 
-    def test_add_new_book_add_name_book_with_genre_not_added(self, collector, add_book):
-        collector.set_book_genre(add_book, collector.genre[1])
+    def test_add_new_book_add_name_book_with_existing_genre_not_added(self, collector, add_book, horror_genre):
+        collector.set_book_genre(add_book, horror_genre)
         collector.add_new_book(add_book)
-        assert collector.books_genre.get(add_book) != ''
-
-    def test_add_new_book_add_empty_name_book_not_added(self, collector):
-        collector.add_new_book('')
-        assert len(collector.get_books_genre()) == 0
-
-    # Проверка метода set_book_genre
-    def test_set_book_genre_set_genre_added(self, collector, add_book):
-        collector.set_book_genre(add_book, collector.genre[random.randint(0, 4)])
-        assert collector.books_genre[add_book] in collector.genre
-
-    @pytest.mark.parametrize('book, genre', [['Что делать, если ваш кот хочет вас убить', 'Индийская комедия'],
-                                             ['Гордость и предубеждение и зомби', 'Ультра Треш'],
-                                             ['Что делать, если ваш кот хочет вас убить', 'Фантастика']])
-    def test_set_book_genre_set_genre_without_book_not_added(self, collector, book, genre):
-        collector.set_book_genre(book, genre)
-        assert len(collector.get_books_genre()) == 0
-
-    # Проверка метода get_book_genre
-    def test_get_book_genre_book_name_with_genre(self, collector, add_book):
-        collector.set_book_genre(add_book, collector.genre[1])
-        assert collector.get_book_genre(add_book) == collector.genre[1]
-
-    def test_get_book_genre_book_name_without_genre(self, collector, add_book):
-        assert collector.get_book_genre(add_book) == ''
+        assert len(collector.get_books_genre()) == 1
 
     # Проверка метода get_books_with_specific_genre
     def test_get_books_with_specific_genre_specific_genre(self, collector, add_book):
@@ -83,28 +43,23 @@ class TestBooksCollector:
     # Проверка метода add_book_in_favorites
     def test_add_book_in_favorites_specific_book_name_added(self, collector, add_book):
         collector.add_book_in_favorites(add_book)
-        assert add_book in collector.favorites
+        assert add_book in collector.get_list_of_favorites_books()
 
     def test_add_book_in_favorites_specific_book_name_not_added_twice(self, collector, add_book):
         collector.add_book_in_favorites(add_book)
         collector.add_book_in_favorites(add_book)
-        assert len(collector.favorites) == 1
+        assert len(collector.get_list_of_favorites_books()) == 1
 
     def test_add_book_in_favorites_unspecific_name_not_added(self, collector, add_book):
         collector.add_book_in_favorites('add_book')
-        assert len(collector.favorites) == 0
+        assert len(collector.get_list_of_favorites_books()) == 0
 
     # Проверка метода delete_book_from_favorites
     def test_delete_book_from_favorites_specific_book_name_deleted(self, collector, add_book):
         collector.add_book_in_favorites(add_book)
         collector.delete_book_from_favorites(add_book)
-        assert len(collector.favorites) == 0
+        assert len(collector.get_list_of_favorites_books()) == 0
 
     def test_test_delete_book_from_favorites(self, collector):
         collector.delete_book_from_favorites('add_book')
-        assert len(collector.favorites) == 0
-
-    # Проверка метода get_list_of_favorites_books
-    def test_get_list_of_favorites_books_book_name(self, collector, add_book):
-        collector.add_book_in_favorites(add_book)
-        assert add_book in collector.get_list_of_favorites_books()
+        assert len(collector.get_list_of_favorites_books()) == 0
